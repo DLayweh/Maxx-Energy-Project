@@ -1,0 +1,60 @@
+/* Ensure the entire page has a background image */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Set the background image to cover the entire page */
+body {
+    background-image: url('../images/AdobeStock_730734680.jpeg'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background fixed while scrolling */
+    position: relative;
+}
+
+/* Add an overlay to improve text readability */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for contrast */
+    z-index: -1;
+}
+
+/* Ensure content is visible above the background */
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Adjust the navbar to be transparent or semi-transparent */
+.navbar {
+    padding: 15px 0;
+    backdrop-filter: blur(5px); /* Adds a blur effect to the background */
+}
+
+/* Contact section styling to make the form stand out */
+.contact-section {
+    padding: 50px 0;
+}
+
+/* Ensure text remains readable */
+.contact-section .container {
+    color: white; /* Change to black if needed */
+}
+
+/* Adjust the footer styling */
+footer {
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent footer */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+}
