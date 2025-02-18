@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Depends, Header, HTTPException
 from fastapi.responses import HTMLResponse
 import psycopg2
 import os
@@ -7,34 +7,30 @@ from visualization import generate_energy_trend_chart
 
 app = FastAPI()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-try:
-    conn = psycopg2.connect(DATABASE_URL)
-    cursor = conn.cursor()
-    print("✅ Database connected successfully!")
-
-    with open("database_init.sql", "r") as sql_file:
-        cursor.execute(sql_file.read())
-        conn.commit()
-        print("✅ Sample database initialized.")
-except Exception as e:
-    print("❌ Database connection failed:", e)
+# Database connection function
+def get_db_cursor():
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+    return conn.cursor(), conn
 
 @app.get("/energy-visualization", response_class=HTMLResponse)
-def energy_visualization():
+def energy_visualization(db=Depends(get_db_cursor)):
+    cursor, conn = db
     try:
         cursor.execute("SELECT id, plant_name, location, energy_generated_kWh, timestamp FROM energy_data ORDER BY timestamp ASC LIMIT 100;")
         rows = cursor.fetchall()
+        conn.close()
         chart_html = generate_energy_trend_chart(rows)
         return HTMLResponse(content=chart_html, status_code=200)
     except Exception as e:
+        conn.close()
         return HTMLResponse(content=f"<h3>Error Generating Visualization: {e}</h3>", status_code=500)
 
 @app.get("/public-data")
-def get_public_data():
+def get_public_data(db=Depends(get_db_cursor)):
+    cursor, conn = db
     cursor.execute("SELECT * FROM energy_data ORDER BY timestamp DESC LIMIT 10;")
     rows = cursor.fetchall()
+    conn.close()
     return [
         {
             "id": row[0],
