@@ -6,15 +6,15 @@ from fastapi.responses import HTMLResponse
 from auth import verify_token  # Firebase authentication
 from visualization import generate_energy_trend_chart
 
-# Load Secret Key from Environment Variable
+
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 
 app = FastAPI()
 
-# Function to create JWT tokens
+
 def create_access_token(data: dict, expires_delta: datetime.timedelta = datetime.timedelta(minutes=30)):
-    """Generate JWT Access Token."""
+    
     to_encode = data.copy()
     expire = datetime.datetime.utcnow() + expires_delta
     to_encode.update({"exp": expire})
@@ -22,7 +22,7 @@ def create_access_token(data: dict, expires_delta: datetime.timedelta = datetime
 
 @app.post("/login")
 def login(username: str, password: str):
-    """Mock Login Endpoint - Returns JWT Token."""
+    
     if username == "admin" and password == "password123":
         token = create_access_token(data={"sub": username})
         return {"access_token": token, "token_type": "bearer"}
@@ -30,7 +30,7 @@ def login(username: str, password: str):
 
 @app.get("/energy-visualization", response_class=HTMLResponse)
 def energy_visualization():
-    """Generate Energy Trend Visualization using Mock Data."""
+    
     try:
         mock_rows = [
             (1, "Solar Plant A", "California", 12345.67, "2025-02-10 08:30:00"),
@@ -46,7 +46,7 @@ def energy_visualization():
 
 @app.get("/mock-public-data")
 def get_mock_public_data():
-    """Return Mock Public Energy Data."""
+    
     mock_data = [
         {"id": 1, "plant_name": "Solar Plant A", "location": "California", "energy_generated_kWh": 12345.67, "timestamp": "2025-02-10 08:30:00"},
         {"id": 2, "plant_name": "Solar Plant B", "location": "Nevada", "energy_generated_kWh": 9876.54, "timestamp": "2025-02-10 09:00:00"},
@@ -58,7 +58,7 @@ def get_mock_public_data():
 
 @app.get("/private-data")
 def get_private_data(authorization: str = Header(None)):
-    """Return Private Energy Data with Firebase Authentication."""
+    
     if not authorization:
         raise HTTPException(status_code=401, detail="Authorization header missing")
 
@@ -72,6 +72,26 @@ def get_private_data(authorization: str = Header(None)):
         "message": "Private energy data accessed!",
         "user": user_data["email"],
     }
+from pydantic import BaseModel
+
+
+MOCK_USER = {
+    "email": "demo@maxxenergy.com",
+    "password": "password123" 
+}
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/mock-login")
+def mock_login(request: LoginRequest):
+    if request.email == MOCK_USER["email"] and request.password == MOCK_USER["password"]:
+        return {
+            "message": "Login successful",
+            "token": "mocked-jwt-token-12345"
+        }
+    raise HTTPException(status_code=401, detail="Invalid email or password")
 
 if __name__ == "__main__":
     import uvicorn
