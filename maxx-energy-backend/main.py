@@ -1,15 +1,28 @@
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.responses import HTMLResponse
-from auth import verify_token  # Firebase authentication
+from pydantic import BaseModel
+from auth import verify_token
+from user_auth import register_user
 from visualization import generate_energy_trend_chart
 
 app = FastAPI()
 
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class TwoFARequest(BaseModel):
+    otp_code: str
+
 @app.get("/energy-visualization", response_class=HTMLResponse)
 def energy_visualization():
-    """Generate Energy Trend Visualization using Mock Data."""
+   
     try:
-        # Mock data for presentation
+       
         mock_rows = [
             (1, "Solar Plant A", "California", 12345.67, "2025-02-10 08:30:00"),
             (2, "Solar Plant B", "Nevada", 9876.54, "2025-02-10 09:00:00"),
@@ -22,9 +35,11 @@ def energy_visualization():
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error Generating Visualization: {e}</h3>", status_code=500)
 
+
+
 @app.get("/mock-public-data")
 def get_mock_public_data():
-    """Return Mock Public Energy Data."""
+    
     mock_data = [
         {"id": 1, "plant_name": "Solar Plant A", "location": "California", "energy_generated_kWh": 12345.67, "timestamp": "2025-02-10 08:30:00"},
         {"id": 2, "plant_name": "Solar Plant B", "location": "Nevada", "energy_generated_kWh": 9876.54, "timestamp": "2025-02-10 09:00:00"},
@@ -36,7 +51,7 @@ def get_mock_public_data():
 
 @app.get("/private-data")
 def get_private_data(authorization: str = Header(None)):
-    """Return Private Energy Data with Firebase Authentication."""
+    
     if not authorization:
         raise HTTPException(status_code=401, detail="Authorization header missing")
 
@@ -49,6 +64,63 @@ def get_private_data(authorization: str = Header(None)):
     return {
         "message": "Private energy data accessed!",
         "user": user_data["email"],
+    }
+
+@app.post("/register")
+def register_user_api(request: RegisterRequest):
+
+    try:
+        result = register_user(request.email, request.password)
+        return {"message": "User registered successfully", "user": result}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/login")
+def login_user_api(request: LoginRequest):
+    try:
+        
+        return {"message": "Login successful (2FA required)", "next_step": "/request-2fa"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/request-2fa")
+def request_2fa(authorization: str = Header(None)):
+    """Step 1: Send OTP for Two-Factor Authentication."""
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Authorization header missing")
+
+    user_data = verify_token(authorization.replace("Bearer ", ""))
+    if not user_data:
+        raise HTTPException(status_code=401, detail="Invalid authentication")
+
+    user_id = user_data["uid"]
+    otp = "123456"  # Mock OTP for presentation
+    print(f"📧 Sent OTP to user {user_id}: {otp}")
+    return {"message": "2FA code sent to your email (mocked for demo)"}
+
+@app.post("/verify-2fa")
+def verify_2fa(request: TwoFARequest):
+    """Step 2: Verify the 2FA OTP."""
+    if request.otp_code == "123456":  # Mock OTP verification
+        return {"message": "2FA verification successful", "status": "approved"}
+    else:
+        raise HTTPException(status_code=401, detail="Invalid or expired OTP")
+
+
+@app.get("/", tags=["Info"])
+def root():
+    return {
+        "message": "Welcome to MAXX Energy API",
+        "docs": "/docs",
+        "visualization": "/energy-visualization",
+        "mock_public_data": "/mock-public-data",
+        "2fa_workflow": {
+            "1. Register": "/register",
+            "2. Login": "/login",
+            "3. Request 2FA": "/request-2fa",
+            "4. Verify 2FA": "/verify-2fa"
+        }
     }
 
 if __name__ == "__main__":
