@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Header, HTTPException
+from fastapi.responses import HTMLResponse
 import psycopg2
 import os
-from auth import verify_token  # Import Firebase authentication function
+from auth import verify_token  # Firebase authentication
+from visualization import generate_energy_trend_chart
 
 app = FastAPI()
 
@@ -20,7 +22,15 @@ try:
 except Exception as e:
     print("❌ Database connection failed:", e)
 
-
+@app.get("/energy-visualization", response_class=HTMLResponse)
+def energy_visualization():
+    try:
+        cursor.execute("SELECT id, plant_name, location, energy_generated_kWh, timestamp FROM energy_data ORDER BY timestamp ASC LIMIT 100;")
+        rows = cursor.fetchall()
+        chart_html = generate_energy_trend_chart(rows)
+        return HTMLResponse(content=chart_html, status_code=200)
+    except Exception as e:
+        return HTMLResponse(content=f"<h3>Error Generating Visualization: {e}</h3>", status_code=500)
 
 @app.get("/public-data")
 def get_public_data():
