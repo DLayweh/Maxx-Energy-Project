@@ -31,7 +31,6 @@ body::before {
 /* Ensure content is visible above the background */
 .container {
     position: relative;
-    z-index: 2;
 }
 
 /* Adjust the navbar to be transparent or semi-transparent */
