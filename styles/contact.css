@@ -1,6 +1,6 @@
 /* Apply background image to the entire page */
 body {
-    background: url('../images/AdobeStock_847615811.jpeg') no-repeat center center fixed;
+    background: url('../images/AdobeStock_847300392.jpeg') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     /* Remove default margin */
@@ -56,7 +56,7 @@ body::before {
 }
 
 .contact {
-    background: #fff;
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
