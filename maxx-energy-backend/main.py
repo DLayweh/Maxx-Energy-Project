@@ -43,6 +43,8 @@ def energy_visualization():
         return HTMLResponse(content=chart_html, status_code=200)
     except Exception as e:
         return HTMLResponse(content=f"<h3>Error Generating Visualization: {e}</h3>", status_code=500)
+    
+    
 
 @app.get("/mock-public-data")
 def get_mock_public_data():
@@ -96,3 +98,22 @@ def mock_login(request: LoginRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+@app.get("/public-data")
+def get_public_data():
+    """Fetch recent public energy data from the database."""
+    try:
+        cursor.execute("SELECT id, plant_name, location, energy_generated_kWh, timestamp FROM energy_data ORDER BY timestamp DESC LIMIT 10;")
+        rows = cursor.fetchall()
+        return [
+            {
+                "id": row[0],
+                "plant_name": row[1],
+                "location": row[2],
+                "energy_generated_kWh": row[3],
+                "timestamp": row[4]
+            }
+            for row in rows
+        ]
+    except Exception as e:
+        return {"error": f"Failed to fetch public data: {e}"}
