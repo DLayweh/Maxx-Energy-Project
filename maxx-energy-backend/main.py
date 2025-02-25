@@ -101,7 +101,9 @@ def energy_visualization():
 # Root route (optional: for testing if API is running)
 @app.get("/", response_class=HTMLResponse)
 def home():
-    return "<h1>Maxx Energy API is Live</h1>"
+    """Root route for API status."""
+    return "<h1>Welcome to Maxx Energy API</h1><p>Endpoints Available:</p><ul><li><a href='/docs'>API Documentation</a></li><li><a href='/energy-visualization'>Energy Visualization</a></li></ul>"
+
 # Run the API
 if __name__ == "__main__":
     import uvicorn
