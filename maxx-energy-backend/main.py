@@ -95,20 +95,13 @@ def get_private_data(authorization: str = Header(None)):
 # Energy Data Visualization Endpoint
 @app.get("/energy-visualization", response_class=HTMLResponse)
 def energy_visualization():
-    """Generate Energy Trend Visualization using Mock Data."""
-    try:
-        mock_rows = [
-            (1, "Solar Plant A", "California", 12345.67, "2025-02-10 08:30:00"),
-            (2, "Solar Plant B", "Nevada", 9876.54, "2025-02-10 09:00:00"),
-            (3, "Solar Plant C", "Arizona", 5678.90, "2025-02-10 09:30:00"),
-            (4, "Solar Plant D", "Texas", 15678.32, "2025-02-10 10:00:00"),
-        ]
-        chart_html = generate_energy_trend_chart(mock_rows)
-        return HTMLResponse(content=chart_html, status_code=200)
-    except Exception as e:
-        return HTMLResponse(content=f"<h3>Error Generating Visualization: {e}</h3>", status_code=500)
+    """Serve the mock energy trend visualization."""
+    return HTMLResponse(content=generate_energy_trend_chart(), status_code=200)
 
-
+# Root route (optional: for testing if API is running)
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return "<h1>Maxx Energy API is Live</h1>"
 # Run the API
 if __name__ == "__main__":
     import uvicorn
