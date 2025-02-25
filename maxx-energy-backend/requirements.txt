@@ -1,0 +1,56 @@
+# Core Framework and ASGI Server
+fastapi==0.103.1
+uvicorn==0.23.2
+
+# Database (PostgreSQL)
+psycopg2==2.9.9
+plotly==5.17.0
+pandas==2.2.0
+
+
+# Firebase and Google Cloud
+firebase-admin==6.6.0
+google-api-core==2.24.1
+google-api-python-client==2.160.0
+google-auth==2.38.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+google-cloud-core==2.4.1
+google-cloud-firestore==2.20.0
+google-cloud-storage==3.0.0
+google-crc32c==1.6.0
+google-resumable-media==2.7.2
+googleapis-common-protos==1.66.0
+grpcio==1.70.0
+grpcio-status==1.70.0
+
+# Security, Requests, and JWT
+certifi==2025.1.31
+cffi==1.17.1
+charset-normalizer==3.4.1
+cryptography==44.0.0
+PyJWT==2.10.1
+requests==2.32.3
+pydantic==2.6.0
+
+# Miscellaneous
+cachetools==5.5.1
+httplib2==0.22.0
+idna==3.10
+msgpack==1.1.0
+proto-plus==1.26.0
+protobuf==5.29.3
+pyasn1==0.6.1
+pyasn1_modules==0.4.1
+pycparser==2.22
+pyparsing==3.2.1
+rsa==4.9
+uritemplate==4.1.1
+urllib3==2.3.0
+
+# Environment Management
+python-dotenv==1.0.0
+
+# Dependency Tools
+setuptools==68.2.2
+wheel==0.42.0
