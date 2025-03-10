@@ -4,6 +4,8 @@ import jwt
 import datetime
 from fastapi import FastAPI, Header, HTTPException, Depends
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from auth import verify_token  # Firebase authentication
 from visualization import generate_energy_trend_chart
 
@@ -14,6 +16,19 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 # FastAPI App
 app = FastAPI()
+
+# Add CORSMiddleware to allow requests from all origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, restrict this to your frontend domain(s)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static directories for serving CSS and JavaScript files
+app.mount("/styles", StaticFiles(directory="styles"), name="styles")
+app.mount("/js", StaticFiles(directory="js"), name="js")
 
 # Database Connection
 try:
@@ -102,7 +117,14 @@ def energy_visualization():
 @app.get("/", response_class=HTMLResponse)
 def home():
     """Root route for API status."""
-    return "<h1>Welcome to Maxx Energy API</h1><p>Endpoints Available:</p><ul><li><a href='/docs'>API Documentation</a></li><li><a href='/energy-visualization'>Energy Visualization</a></li></ul>"
+    return (
+        "<h1>Welcome to Maxx Energy API</h1>"
+        "<p>Endpoints Available:</p>"
+        "<ul>"
+        "<li><a href='/docs'>API Documentation</a></li>"
+        "<li><a href='/energy-visualization'>Energy Visualization</a></li>"
+        "</ul>"
+    )
 
 # Run the API
 if __name__ == "__main__":

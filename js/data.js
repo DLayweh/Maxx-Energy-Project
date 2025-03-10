@@ -1,7 +1,10 @@
 async function fetchMockData() {
     try {
         const response = await fetch("https://maxx-energy-project.onrender.com/mock-public-data");
+        if (!response.ok) throw new Error("Network response was not ok");
+        
         const data = await response.json();
+        console.log("Fetched Data:", data);  // Debugging log
         displayData(data);
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -10,7 +13,7 @@ async function fetchMockData() {
 
 function displayData(data) {
     const tableBody = document.getElementById("data-table-body");
-    tableBody.innerHTML = "";
+    tableBody.innerHTML = ""; // Clear previous entries
 
     data.forEach((item) => {
         const row = `
