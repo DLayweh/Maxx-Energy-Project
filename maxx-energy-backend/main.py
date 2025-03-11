@@ -28,10 +28,10 @@ app.add_middleware(
 script_dir = os.path.dirname(__file__)
 static_path = os.path.join(script_dir, "static")
 
-app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
+app.mount("./", StaticFiles(directory=static_path, html=True), name="static")
 
 # Mount the static folder to serve HTML, CSS, and JS files
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("./", StaticFiles(directory="static", html=True), name="static")
 
 # Database Connection
 try:
