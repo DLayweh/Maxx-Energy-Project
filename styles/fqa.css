@@ -1,31 +1,44 @@
-/* Reset default margins and paddings */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    outline: none;
+    font-family: sans-serif;
 }
 
-/* Container settings */
-.container {
-    max-width: 1200px;
-    padding: 20px;
-    margin: auto;
+body {
+    width: 100%;
+    height: auto;
+    padding: 3%;
+    background-color: #fedddd;
 }
 
-/* Navbar styling */
+.header {
+    background-image: linear-gradient(rgba(0,0,0,0.7)), rgba(0,0,0,0.7), url(../images/AdobeStock_730734680.jpeg);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5% 3%;
+    border-radius: 30px;
+    max-height: 380px;
+    color: white;
+}
+/* Navbar Styles */
 .navbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    background-color: black;
+    color: rgb(248, 245, 245);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    color: white;
     z-index: 100;
-    background-color: black;
 }
 
 .nav-links {
@@ -55,102 +68,10 @@
     width: auto;
 }
 
-/* Hero section */
-.hero {
-    position: relative;
-    background: url('../images/AdobeStock_809523421.jpeg') center/cover no-repeat;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 800px;
-    padding: 20px;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
-
-/* Section styling */
-section {
-    padding: 50px 0;
-    text-align: center;
-}
-
-/* Responsive text and spacing */
-p {
-    max-width: 700px;
-    margin: auto;
-    line-height: 1.6;
-    font-size: 1.1rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
-
-/* Layout for text and images */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.col-md-6 {
-    flex: 1;
-    padding: 15px;
-}
-
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-/* CTA button */
-.cta-button {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #FFC107;
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: 0.3s ease;
-}
-
-.cta-button:hover {
-    background-color: orange;
-}
-
 /* Footer */
 .footer {
     background-color: black;
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center;
     padding: 30px 20px;
 }
@@ -248,6 +169,7 @@ p {
     h1 {
         font-size: 2rem;
     }
+
     p {
         font-size: 1rem;
     }
@@ -257,20 +179,25 @@ p {
     h1 {
         font-size: 1.8rem;
     }
+
     p {
         font-size: 0.95rem;
     }
+
     .footer-content {
         flex-direction: column;
         text-align: center;
     }
+
     .footer-links {
         align-items: center;
     }
+
     .row {
         flex-direction: column;
         text-align: center;
     }
+
     .col-md-6 {
         width: 100%;
     }
