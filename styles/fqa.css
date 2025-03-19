@@ -11,11 +11,13 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 3%;
-    background: url(../images/AdobeStock_369434840.jpeg) no-repeat center center/cover;
+    background: url(../images/AdobeStock_80511892.jpeg) no-repeat center center/cover;
     display: flex;
     flex-direction: column;
 }
-
+.main-content {
+    flex: 1;
+}
 .header {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../images/AdobeStock_730734680.jpeg);
     background-position: top center;
@@ -204,6 +206,8 @@ body {
     text-align: center;
     padding: 30px 20px;
     margin-top: auto;
+    width: 100%;
+    padding: 30px 20px;
 }
 
 .footer-content {
