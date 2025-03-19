@@ -1,0 +1,29 @@
+<!-- data.html in the static folder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Data</title>
+  <!-- If data.css is in "static/styles/" -->
+  <link rel="stylesheet" href="/styles/data.css" />
+</head>
+<body>
+  <h1>Energy Data Overview</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Plant Name</th>
+        <th>Location</th>
+        <th>Energy Generated</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody id="data-table-body"></tbody>
+  </table>
+
+  <!-- If data.js is in "static/js/" -->
+  <script src="/js/data.js"></script>
+</body>
+</html>
